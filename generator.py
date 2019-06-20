@@ -1,7 +1,8 @@
 class LinkGenerator:
-    def __init__(self, id):
+    def __init__(self, id, wtf):
         self.id = id
         self.main_link = 'https://helion.pl/'
+        self.wtf = wtf
     
     def link(self):
         link = input("Enter the link: ")
@@ -9,6 +10,8 @@ class LinkGenerator:
     
     def main_page(self):
         page = '{0}view/{1}'.format(self.main_link, self.id)
+        if self.wtf:
+            genarator.write_to_file(page)
         return page
     
     def product_page(self, link):
@@ -17,6 +20,8 @@ class LinkGenerator:
         page = '{0}view/{1}/{2}'.format(self.main_link,
                                         self.id,
                                         prod_code)
+        if self.wtf:
+            genarator.write_to_file(page)   
         return page
     
     def sale_page(self, link):
@@ -24,6 +29,8 @@ class LinkGenerator:
         page = '{0}page/{1}/{2}'.format(self.main_link,
                                         self.id,
                                         sale_name)
+        if self.wtf:
+            genarator.write_to_file(page)
         return page
     
     def cat_page(self, link):
@@ -31,20 +38,23 @@ class LinkGenerator:
         page = '{0}page/{1}/kategorie/{2}'.format(self.main_link,
                                                   self.id,
                                                   cat_name)
+        if self.wtf:
+            genarator.write_to_file(page)
         return page
     
     def check_link(self):
         while True:
-            print('1. Main page')
-            print('2. Product page')
-            print('3. Sale page')
-            print('4. Category page')
+            print('1. Main page.')
+            print('2. Product page.')
+            print('3. Sale page.')
+            print('4. Category page.')
+            print('9. Links from file.')
             print('')
             print('0. Exit')
             try:
                 number = int(input('Which link you want to modify?: '))
                 if number == 0:
-                    print('Elo!')
+                    print('Bye!')
                     exit()
                 if number > 0 and number <= 4:
                     break
@@ -55,6 +65,10 @@ class LinkGenerator:
                 print("Need to be integer number.")
                 continue
         return number
+    
+    def write_to_file(self, page):
+        with open('links.txt', 'a') as file:
+            file.write(page + '\n')
     
     def choose_link(self, link):
         if choosen == 1:
@@ -75,9 +89,21 @@ if __name__ == '__main__':
         id = input("Enter ID: ")
         if len(id) == 5:
             break
-        print("Invalid ID! needs to be 5 characters long.")
+        print("Invalid ID! Needs to be 5 characters long.")
+    
+    while True:
+        check = input("Do you want to save the result to a file?[Y/N]: ").upper()
+        if check == 'Y':
+            wtf = True
+            break
+        elif check == 'N':
+            wtf = False
+            break
+        else:
+            print("Y or N")
+            continue
 
-    genarator = LinkGenerator(id)
+    genarator = LinkGenerator(id, wtf)
 
     while True:
         try:

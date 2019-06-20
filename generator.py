@@ -14,12 +14,14 @@ class LinkGenerator:
         return page
     
     def product_page(self, link):
-        sale = link[27:]
-        page = self.main_link + 'page/' + self.id + sale
+        dot = link.split(".")[1]
+        coma = dot.split(",")[1]
+        page = self.main_link + 'view/' + self.id + '/' + coma
         return page
     
     def sale_page(self, link):
-        page = link + 'view/' + self.id
+        sale = link.split('/')[4]
+        page = self.main_link + 'page/' + self.id + '/' + sale
         return page
     
     def cat_page(self, link):

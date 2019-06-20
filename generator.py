@@ -21,7 +21,7 @@ class LinkGenerator:
                                         self.id,
                                         prod_code)
         if self.wtf:
-            genarator.write_to_file(page)   
+            genarator.write_to_file(page)
         return page
     
     def sale_page(self, link):
@@ -48,14 +48,15 @@ class LinkGenerator:
             print('2. Product page.')
             print('3. Sale page.')
             print('4. Category page.')
-            print('9. Links from file.')
             print('')
             print('0. Exit')
             try:
                 number = int(input('Which link you want to modify?: '))
                 if number == 0:
-                    print('Bye!')
+                    print("Thanks for choosing my app!")
                     exit()
+                if number == 9:
+                    break
                 if number > 0 and number <= 4:
                     break
                 else:
@@ -69,6 +70,15 @@ class LinkGenerator:
     def write_to_file(self, page):
         with open('links.txt', 'a') as file:
             file.write(page + '\n')
+    
+    def file_links(self):
+        name = input("File name: ")
+        name = name + '.txt'
+        print(name)
+        with open(name, 'r') as file:
+            for link in file:
+                genarator.product_page(link)
+
     
     def choose_link(self, link):
         if choosen == 1:
@@ -92,18 +102,34 @@ if __name__ == '__main__':
         print("Invalid ID! Needs to be 5 characters long.")
     
     while True:
-        check = input("Do you want to save the result to a file?[Y/N]: ").upper()
+        check = input("Do you have a file to process?[Y/N]: ").upper()
         if check == 'Y':
+            file = True
             wtf = True
             break
         elif check == 'N':
-            wtf = False
+            file = False
+            while True:
+                check = input("Do you want to save the result to a file?[Y/N]: ").upper()
+                if check == 'Y':
+                    break
+                elif check == 'N':
+                    wtf = False
+                    break
+                else:
+                    print("Y or N")
+                    continue
             break
         else:
             print("Y or N")
             continue
 
     genarator = LinkGenerator(id, wtf)
+
+    if file:
+        genarator.file_links()
+        print("Thanks for choosing my app!")
+        exit()
 
     while True:
         try:
@@ -119,4 +145,6 @@ if __name__ == '__main__':
     for link in range(num_of_links):
         choosen = genarator.check_link()
         result = genarator.choose_link(choosen)
-        print(result)
+        print('Your dedicated link: {}'.format(result))
+    
+    print("Thanks for choosing my app!")

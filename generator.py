@@ -1,23 +1,30 @@
+import re
+
 class LinkGenerator:
     def __init__(self, id):
         self.id = id
+        self.main_link = 'https://helion.pl/'
     
     def link(self):
         link = input("Enter the link: ")
         return link
     
     def main_page(self, link):
-        page = link + 'view/' + self.id
-        print(page)
+        page = self.main_link + 'view/' + self.id
+        return page
     
     def product_page(self, link):
-        pass
+        sale = link[27:]
+        page = self.main_link + 'page/' + self.id + sale
+        return page
     
     def sale_page(self, link):
-        pass
+        page = link + 'view/' + self.id
+        return page
     
     def cat_page(self, link):
-        pass
+        page = link + 'view/' + self.id
+        return page
     
     def check_link(self):
         print('1. Main page')
@@ -26,6 +33,17 @@ class LinkGenerator:
         print('4. Category page')
         number = int(input('Which link you want to modify?: '))
         return number
+    
+    def choose_link(self, link):
+        if choosen == 1:
+            page = genarator.main_page(link)
+        if choosen == 2:
+            page = genarator.product_page(link)
+        if choosen == 3:
+            page = genarator.sale_page(link)
+        if choosen == 4:
+            page = genarator.cat_page(link)
+        return page
 
 while True:
     id = input("Enter ID: ")
@@ -36,21 +54,5 @@ while True:
 genarator = LinkGenerator(id)
 choosen = genarator.check_link()
 link = genarator.link()
-
-if choosen == 1:
-    print("1")
-    genarator.main_page(link)
-
-if choosen == 2:
-    print("2")
-    genarator.product_page(link)
-
-if choosen == 3:
-    print("3")
-    genarator.sale_page(link)
-
-if choosen == 4:
-    print("4")
-    genarator.cat_page(link)
-
-print("end")
+result = genarator.choose_link(link)
+print(result)

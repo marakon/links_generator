@@ -5,8 +5,12 @@ class LinkGenerator:
         self.write_to_file = write_to_file
     
     def link(self):
-        link = input("Enter the link: ")
-        return link
+        while True:
+            link = input("Enter the link: ")
+            if link.startswith(self.main_link):
+                return link
+            else:
+                continue
     
     def main_page(self):
         page = '{0}view/{1}'.format(self.main_link, self.id)
@@ -15,29 +19,42 @@ class LinkGenerator:
         return page
     
     def product_page(self, link):
-        dot_split = link.split(".")[1]
-        prod_code = dot_split.split(",")[1]
-        page = '{0}view/{1}/{2}'.format(self.main_link,
-                                        self.id,
-                                        prod_code)
+        while True:
+            try:
+                dot_split = link.split(".")[1]
+                prod_code = dot_split.split(",")[1]
+                page = '{0}view/{1}/{2}'.format(self.main_link,
+                                                self.id,
+                                                prod_code)
+                break
+            except:
+                link = genarator.link()
         if self.write_to_file:
             genarator.file_write(page)
         return page
     
     def sale_page(self, link):
-        sale_name = link.split('/')[-1]
-        page = '{0}page/{1}/{2}'.format(self.main_link,
-                                        self.id,
-                                        sale_name)
+        while True:
+            try:
+                sale_name = link.split('/')[-1]
+                page = '{0}page/{1}/{2}'.format(self.main_link,
+                                                self.id,
+                                                sale_name)
+            except:
+                link = genarator.link()
         if self.write_to_file:
             genarator.file_write(page)
         return page
     
     def cat_page(self, link):
-        cat_name = link.split('/')[-1]
-        page = '{0}page/{1}/kategorie/{2}'.format(self.main_link,
-                                                  self.id,
-                                                  cat_name)
+        while True:
+            try:
+                cat_name = link.split('/')[-1]
+                page = '{0}page/{1}/kategorie/{2}'.format(self.main_link,
+                                                        self.id,
+                                                        cat_name)
+            except:
+                link = genarator.link()
         if self.write_to_file:
             genarator.file_write(page)
         return page
@@ -115,15 +132,12 @@ def wanna_save():
     while True:
         check = input("Do you want to save the result to a file?[Y/N]: ")
         if check.upper() == 'Y':
-            write_to_file = True
-            break
+            return True
         elif check.upper() == 'N':
-            write_to_file = False
-            break
+            return False
         else:
             print("Y or N")
             continue
-    return write_to_file
 
 #========================================================================#
 

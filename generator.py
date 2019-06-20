@@ -1,8 +1,8 @@
 class LinkGenerator:
-    def __init__(self, id, wtf):
+    def __init__(self, id, write_to_file):
         self.id = id
         self.main_link = 'https://helion.pl/'
-        self.wtf = wtf
+        self.write_to_file = write_to_file
     
     def link(self):
         link = input("Enter the link: ")
@@ -10,8 +10,8 @@ class LinkGenerator:
     
     def main_page(self):
         page = '{0}view/{1}'.format(self.main_link, self.id)
-        if self.wtf:
-            genarator.write_to_file(page)
+        if self.write_to_file:
+            genarator.file_write(page)
         return page
     
     def product_page(self, link):
@@ -20,8 +20,8 @@ class LinkGenerator:
         page = '{0}view/{1}/{2}'.format(self.main_link,
                                         self.id,
                                         prod_code)
-        if self.wtf:
-            genarator.write_to_file(page)
+        if self.write_to_file:
+            genarator.file_write(page)
         return page
     
     def sale_page(self, link):
@@ -29,8 +29,8 @@ class LinkGenerator:
         page = '{0}page/{1}/{2}'.format(self.main_link,
                                         self.id,
                                         sale_name)
-        if self.wtf:
-            genarator.write_to_file(page)
+        if self.write_to_file:
+            genarator.file_write(page)
         return page
     
     def cat_page(self, link):
@@ -38,8 +38,8 @@ class LinkGenerator:
         page = '{0}page/{1}/kategorie/{2}'.format(self.main_link,
                                                   self.id,
                                                   cat_name)
-        if self.wtf:
-            genarator.write_to_file(page)
+        if self.write_to_file:
+            genarator.file_write(page)
         return page
     
     def check_link(self):
@@ -67,11 +67,11 @@ class LinkGenerator:
                 continue
         return number
     
-    def write_to_file(self, page):
+    def file_write(self, page):
         with open('links.txt', 'a') as file:
             file.write(page + '\n')
     
-    def file_links(self):
+    def file_manip(self):
         name = input("File name: ")
         name = name + '.txt'
         print(name)
@@ -94,6 +94,39 @@ class LinkGenerator:
             page = genarator.cat_page(link)
         return page
 
+
+def file_check():
+    while True:
+        check = input("Do you have a file to process?[Y/N]: ")
+        if check.upper() == 'Y':
+            file = True
+            write_to_file = True
+            break
+        elif check.upper() == 'N':
+            file = False
+            write_to_file = wanna_save()
+            break
+        else:
+            print("Y or N")
+            continue
+    return file, write_to_file
+
+def wanna_save():
+    while True:
+        check = input("Do you want to save the result to a file?[Y/N]: ")
+        if check.upper() == 'Y':
+            write_to_file = True
+            break
+        elif check.upper() == 'N':
+            write_to_file = False
+            break
+        else:
+            print("Y or N")
+            continue
+    return write_to_file
+
+#========================================================================#
+
 if __name__ == '__main__':
     while True:
         id = input("Enter ID: ")
@@ -101,33 +134,12 @@ if __name__ == '__main__':
             break
         print("Invalid ID! Needs to be 5 characters long.")
     
-    while True:
-        check = input("Do you have a file to process?[Y/N]: ").upper()
-        if check == 'Y':
-            file = True
-            wtf = True
-            break
-        elif check == 'N':
-            file = False
-            while True:
-                check = input("Do you want to save the result to a file?[Y/N]: ").upper()
-                if check == 'Y':
-                    break
-                elif check == 'N':
-                    wtf = False
-                    break
-                else:
-                    print("Y or N")
-                    continue
-            break
-        else:
-            print("Y or N")
-            continue
+    file, write_to_file = file_check()
 
-    genarator = LinkGenerator(id, wtf)
+    genarator = LinkGenerator(id, write_to_file)
 
     if file:
-        genarator.file_links()
+        genarator.file_manip()
         print("Thanks for choosing my app!")
         exit()
 
@@ -137,7 +149,7 @@ if __name__ == '__main__':
             if num_of_links >= 1:
                 break
             else: 
-                print("Only one link or more.")
+                print("You can not process 0 <= links...")
                 continue
         except ValueError:
             print("Needs to be integer.")
